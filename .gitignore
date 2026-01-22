@@ -12,4 +12,5 @@ build
 # other
 run
 run-data
+run-server
 .github

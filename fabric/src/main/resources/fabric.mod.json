@@ -1,32 +1,35 @@
 {
-  "schemaVersion": 1,
-  "id": "template",
-  "version": "${mod_version}",
-  "name": "${mod_name}",
-  "description": "${mod_description}",
-  "authors": [
-    "${mod_authors}"
-  ],
-  "contact": {
-    "homepage": "${homepage_url}",
-    "sources": "${source_url}"
-  },
-  "license": "${mod_license}",
-  "icon": "assets/template.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.invictusslayer.template.fabric.TemplateFabric"
-    ]
-  },
-  "mixins": [
-    "template.mixins.json",
-    "template-fabric.mixins.json"
-  ],
-  "depends": {
-    "java": ">=17",
-    "minecraft": "${mc_version}",
-    "fabric": ">=${fabric_loader}",
-    "architectury": ">=${arch_version}"
-  }
+	"schemaVersion": 1,
+	"id": "template",
+	"version": "${mod_version}",
+	"name": "${mod_name}",
+	"description": "${mod_description}",
+	"authors": [
+		"${mod_authors}"
+	],
+	"contact": {
+		"homepage": "${homepage_url}",
+		"sources": "${source_url}",
+		"issues": "${issue_url}"
+	},
+	"license": "${mod_license}",
+	"icon": "assets/logo.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.invictusslayer.template.TemplateFabric"
+		]
+	},
+	"mixins": [
+		"template.mixins.json",
+		"template-fabric.mixins.json"
+	],
+	"depends": {
+		"java": ">=${java_version}",
+		"minecraft": "~${mc_version}",
+		"fabric": ">=${fabric_loader}",
+		"fabric-api": "*"
+	},
+	"suggests": {
+	}
 }

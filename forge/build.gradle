@@ -1,77 +1,86 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "multiloader-loader"
+    id "net.neoforged.moddev.legacyforge"
+    id "com.hypherionmc.modutils.modpublisher" version "2.+"
 }
 
-architectury {
-    platformSetupLoomIde()
-    forge()
+mixin {
+    add(sourceSets.main, "${mod_id}.refmap.json")
+
+    config("${mod_id}.mixins.json")
+    config("${mod_id}-forge.mixins.json")
 }
 
-loom {
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
-        mixinConfigs "${mod_id}.mixins.json", "${mod_id}-forge.mixins.json"
+jar {
+    finalizedBy("reobfJar")
+    manifest {
+        attributes["MixinConfigs"] = "${mod_id}.mixins.json,${mod_id}-forge.mixins.json"
     }
+}
 
+legacyForge {
+    version = "${mc_version}-${forge_version}"
+
+    validateAccessTransformers = true
+
+    def at = project(":common").file("src/main/resources/META-INF/accesstransformer.cfg")
+    if (at.exists()) accessTransformers = [at.absolutePath]
+    parchment {
+        minecraftVersion = parch_mc_version
+        mappingsVersion = parch_version
+    }
     runs {
+        client {
+            client()
+        }
         data {
             data()
-            programArgs "--all", "--mod", "${mod_id}"
-            programArgs "--output", project(":common").file("src/generated/resources").absolutePath
-            programArgs "--existing", file("src/main/resources").absolutePath
-            programArgs "--existing", file("src/generated/resources").absolutePath
-            programArgs "--existing", project(":common").file("src/main/resources").absolutePath
-            programArgs "--existing", project(":common").file("src/generated/resources").absolutePath
+            programArguments.addAll "--all", "--mod", "${mod_id}"
+            programArguments.addAll "--output", rootProject.project(":common").file("src/main/generated").absolutePath
+            programArguments.addAll "--existing", file("src/main/resources").absolutePath
+            programArguments.addAll "--existing", rootProject.project(":common").file("src/main/resources").absolutePath
+            programArguments.addAll "--existing", rootProject.project(":common").file("src/main/generated").absolutePath
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
         }
     }
 }
 
-configurations {
-    common
-    shadowCommon
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
-}
+sourceSets.main.resources.srcDir "src/main/generated"
 
 dependencies {
-    forge "net.minecraftforge:forge:${mc_version}-${forge_version}"
-    modApi "dev.architectury:architectury-forge:${arch_version}"
-//    modApi "me.shedaniel:architectury-forge:${arch_version}" // 1.16.5 only
-
-    modApi "me.shedaniel.cloth:cloth-config-forge:${cloth_version}"
-
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    compileOnly project(":common")
+    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0"))
 }
 
-shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-}
-
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-}
-
-jar {
-    archiveClassifier = "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
+publisher {
+    apiKeys {
+        modrinth System.getenv("MODRINTH_TOKEN")
+        curseforge System.getenv("CURSEFORGE_TOKEN")
     }
+    setCurseID("$curseforge_id")
+    setModrinthID("$modrinth_id")
+    setVersionType("$release_type")
+    setChangelog(projectDir.toPath().parent.resolve("CHANGELOG.md").toFile().readLines().join("\n"))
+
+    setDisplayName("$mod_name ${project.version} [Forge]")
+    setVersion("${mod_version}+forge")
+    setGameVersions("$mc_version")
+    setLoaders("forge")
+
+    setArtifact(reobfJar)
+    addAdditionalFile(sourcesJar)
+    setCurseEnvironment("both")
+
+    curseDepends {}
+    modrinthDepends {}
 }

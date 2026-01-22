@@ -1,6 +1,5 @@
-package net.invictusslayer.template.fabric;
+package net.invictusslayer.template;
 
-import net.invictusslayer.template.common.Template;
 import net.fabricmc.api.ModInitializer;
 
 public class TemplateFabric implements ModInitializer {
