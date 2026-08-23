@@ -1,12 +1,20 @@
-This repository is a template for setting up a multi-loader Minecraft mod using [Architectury](https://docs.architectury.dev/start) for 1.18.2-1.21.1. Clone 
-this repo and go through the files `fabric.mod.json`, `mods.toml`, `neoforge.mods.toml` as 
-well as all the **package names** and `.mixins.json` files and change all occurrences of the word `template` to your 
-mod-id. In addition, change instances of my name `invictusslayer` to your own. After doing so change `gradle.properties` 
-so that it contains the appropriate values for your repository. This `README.md` can also be used as a template to 
-design your own as GitHub will display it on your repository. For NeoForge 1.20.6+ ensure the `mods.toml` file is 
-named `neoforge.mods.toml`. For versions where there is no mod-loader version listed in `gradle.properties`, there 
-is no Architectury support so delete that module when appropriate (I'm looking at you Forge 1.21). I have removed some 
-minor versions as there is significantly less demand for these. This template uses the mappings from [ParchmentMC](https://parchmentmc.org/docs/getting-started) 
-but these can be changed to the official mojang mappings or yarn by following the appropriate steps [here](https://docs.architectury.dev/plugin/get_started).
+This repository is a template for setting up a multi-loader Minecraft mods for version 1.20.1 on Fabric and Forge.
 
-Up to date versions for dependencies can be found in `gradle.properties`.
+# Setup
+To get started generate a new repository from this template. Clone your new repo and go through the files and replace
+all instances of the mod ID, `template`, with your own. Do the same for the author name, `author`. Important files to
+check are `fabric.mod.json`, `mods.toml` as well as all the package names and `*.mixins.json` names and contents. After
+doing so change all relevant values in `gradle.properties` to match.
+
+This template comes fully prepared for Mixins with [MixinExtras](https://github.com/LlamaLad7/MixinExtras).
+
+This template uses the mappings from [ParchmentMC](https://parchmentmc.org/docs/getting-started) but these can be changed to the official mojang mappings or
+yarn by following the appropriate steps [here](https://docs.architectury.dev/plugin/get_started).
+
+For publishing, this template comes setup with [ModPublisher](https://github.com/firstdarkdev/modpublisher). This can be configured in the Fabric and Forge
+`build.gradle` files. Modrinth and CurseForge IDs are defined in `gradle.properties`.
+
+## Tips
+For mod specific classes which will be present in most mods, e.g. `ModClient` and `ModFabric` classes, it is good
+practice to name these with the mod name or initialisation for clarity between mods, i.e. `T[emplate]Client` and
+`T[emplate]Fabric`. Full name is preferred if it is short.

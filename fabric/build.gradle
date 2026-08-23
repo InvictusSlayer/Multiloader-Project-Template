@@ -4,6 +4,8 @@ plugins {
     id "com.hypherionmc.modutils.modpublisher" version "2.+"
 }
 
+sourceSets.main.resources.srcDir project(":common").file("src/main/generated").absolutePath
+
 dependencies {
     minecraft "com.mojang:minecraft:${mc_version}"
     mappings loom.layered {
@@ -15,7 +17,7 @@ dependencies {
 }
 
 loom {
-    def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+    def aw = project(":fabric").file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) accessWidenerPath.set(aw)
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")

@@ -9,37 +9,23 @@ modId="template"
 version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
-#credits=""
+#credits="${mod_credits}"
 description='''${mod_description}'''
-logoFile="assets/${mod_id}.png"
+logoFile="assets/logo.png"
 displayURL="${homepage_url}"
 #updateJSONURL=""
 #displayTest="MATCH_VERSION" # MATCH_VERSION/IGNORE_SERVER_VERSION/IGNORE_ALL_VERSION/NONE
 
 [[dependencies.template]]
-modId = "minecraft"
-mandatory = true
-versionRange = "${mc_range}"
-ordering = "NONE" # BEFORE/AFTER/NONE
-side = "BOTH" # CLIENT/SERVER/BOTH
+modId="minecraft"
+mandatory=true
+versionRange="${mc_range}"
+ordering="NONE" # BEFORE/AFTER/NONE
+side="BOTH" # CLIENT/SERVER/BOTH
 
 [[dependencies.template]]
-modId = "forge"
-mandatory = true
-versionRange = "${forge_range}"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.template]]
-modId = "architectury"
-mandatory = true
-versionRange = "[${arch_version},)"
-ordering = "AFTER"
-side = "BOTH"
-
-#[[dependencies.template]]
-#modId="terrablender"
-#mandatory=true
-#versionRange="[${tb_version},)"
-#ordering="NONE"
-#side="BOTH"
+modId="forge"
+mandatory=true
+versionRange="${forge_range}"
+ordering="NONE"
+side="BOTH"

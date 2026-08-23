@@ -53,7 +53,7 @@ legacyForge {
     }
 }
 
-sourceSets.main.resources.srcDir "src/main/generated"
+sourceSets.main.resources.srcDir project(":common").file("src/main/generated").absolutePath
 
 dependencies {
     compileOnly project(":common")
