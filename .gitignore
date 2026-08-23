@@ -5,6 +5,14 @@ out
 *.iml
 .idea
 
+# eclipse
+bin
+.settings
+.classpath
+.factorypath
+.project
+.eclipse
+
 # gradle
 build
 .gradle
@@ -13,4 +21,4 @@ build
 run
 run-data
 run-server
-.github
+generated
